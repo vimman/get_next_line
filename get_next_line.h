@@ -6,7 +6,7 @@
 /*   By: qdurot <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/05 00:53:09 by qdurot            #+#    #+#             */
-/*   Updated: 2017/05/05 00:54:45 by qdurot           ###   ########.fr       */
+/*   Updated: 2017/05/09 19:40:09 by qdurot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,6 @@
 # include <sys/uio.h>
 # include <sys/types.h>
 
-# define BUFF_SIZE = 8
+# define BUF_SIZE 8
 
 #endif
