@@ -1,37 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: qdurot <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/05/16 17:39:51 by qdurot            #+#    #+#             */
-/*   Updated: 2017/05/17 19:35:02 by qdurot           ###   ########.fr       */
+/*   Created: 2017/05/15 19:14:00 by qdurot            #+#    #+#             */
+/*   Updated: 2017/05/17 19:35:45 by qdurot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <stdio.h>
+#include <string.h>
+#include <stdio.h>
 #include "get_next_line.h"
 #include "libft.h"
 
-int		get_next_line(const int fd, char **line)
+int		main(int argc, char **argv)
 {
-	size_t				i;
-	size_t				k;
-	int					ret;
-	char				*read;
-	char				*buf;
-	char				*t_line;
+	int		i;
+	int		fd;
+	char	*tmp;
 
 	i = 0;
-	k = 0;
-	buf = '\0'
-	while ((ret = read(fd, read, BUF_SIZE)))
+	tmp = NULL;
+	if (argc != 2)
+		ft_putstr("fuck you man !");
+	fd = open(argv[1], O_RDONLY);
+	if (fd == -1)
+		ft_putstr("open() failed \n");
+	while (get_next_line(fd, &tmp))
 	{
-		read[BUF_SIZE] = '\0';
-		buf = ft_strjoin(buf, read);
-		if (sub = ft_strchr(buf, 0))
-			buf = ft_strsub(buf, 0, ft_strlen(buf));
+		printf("%s", tmp);
 	}
-	*line = buf;
-	return (i);
 }
