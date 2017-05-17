@@ -68,13 +68,19 @@ SRC = 				\
 
 OBJECTS = $(SRC:.c=.o)
 
+FLAGS = -Wall -Werror -Wextra
+
 HEADERS = .
 
 all:$(NAME)
 
 $(NAME):
-	@gcc -c $(SRC) -I $(HEADERS) -Wall -Werror -Wextra
+	@gcc $(FLAGS) -c $(SRC) -I $(HEADERS)
 	@ar rc $(NAME) $(OBJECTS)
+	@ranlib $(NAME)
+
+%.o: %.c
+	@gcc -c $(FLAGS) -o $@ $^
 
 clean:
 	@/bin/rm -f $(OBJECTS)
