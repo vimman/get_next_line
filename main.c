@@ -28,13 +28,27 @@ int		main(int argc, char **argv)
 
 	i = 0;
 	tmp = NULL;
-	if (argc != 2)
-		ft_putstr("fuck you man !");
-	fd = open(argv[1], O_RDONLY);
-	if (fd == -1)
-		ft_putstr("open() failed \n");
-	while (get_next_line(fd, &tmp))
+	if (argc == 1)
 	{
-		printf("%s", tmp);
+		fd = 0;
+		get_next_line(fd, &tmp);
+		ft_putstr(tmp);
 	}
+	else if (argc == 2)
+	{
+		fd = open(argv[1], O_RDONLY);
+		while (get_next_line(fd, &tmp))
+		{
+			ft_putstr(tmp);
+		}
+	}
+	//else if (argc != 2)
+	//	ft_putstr("fuck you man !");
+	//fd = open(argv[1], O_RDONLY);
+	//if (fd == -1)
+	//	ft_putstr("open() failed \n");
+	//while (get_next_line(fd, &tmp))
+	//{
+	//	printf("%s", tmp);
+	//}
 }

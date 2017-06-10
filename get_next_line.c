@@ -6,33 +6,42 @@
 /*   By: qdurot <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/16 17:39:51 by qdurot            #+#    #+#             */
-/*   Updated: 2017/05/17 22:08:12 by qdurot           ###   ########.fr       */
+/*   Updated: 2017/06/08 18:44:17 by qdurot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 #include "libft.h"
+#include <stdio.h>
 
 int		get_next_line(const int fd, char **line)
 {
 	size_t				i;
 	int					ret;
-	char				*rd;
-	char				*buf;
+	char				rd[BUF_SIZE + 1];
+	static char			*buf;
+	char				*ptr;
 
 	i = 0;
-	if (!(rd = ft_strnew(BUF_SIZE)))
-		return (-1);
+	ptr = NULL;
+
+	rd[BUF_SIZE] = '\0';
 	buf = ft_strnew(0);
-	while ((ret = read(fd, rd, BUF_SIZE)))
+	while (!(ptr) && (ret = read(fd, rd, BUF_SIZE)))
 	{
 		buf = ft_strjoin(buf, rd);
-		if (ft_strchr(buf, '\n'))
-		{
-			*line = ft_strdup(buf);
-			buf = ft_strsub(buf, 0, ft_strlen(buf));
-		}
+		ptr = ft_strchr(buf, '\n');
 	}
-	*line = buf;
+	if (ptr)
+	{
+		*line = ft_strsub(buf, 0, *ptr);
+		ret = 1;
+	}
+	else
+	{
+		*line = ft_strdup(buf);
+		ft_strclr(buf);
+		ret = 1;
+	}
 	return (ret);
 }
