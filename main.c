@@ -42,13 +42,13 @@ int		main(int argc, char **argv)
 			ft_putstr(tmp);
 		}
 	}
-	//else if (argc != 2)
-	//	ft_putstr("fuck you man !");
-	//fd = open(argv[1], O_RDONLY);
-	//if (fd == -1)
-	//	ft_putstr("open() failed \n");
-	//while (get_next_line(fd, &tmp))
-	//{
-	//	printf("%s", tmp);
-	//}
+	else if (argc != 2)
+		ft_putstr("fuck you man !");
+	fd = open(argv[1], O_RDONLY);
+	if (fd == -1)
+		ft_putstr("open() failed \n");
+	while (get_next_line(fd, &tmp))
+	{
+		printf("%s", tmp);
+	}
 }

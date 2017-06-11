@@ -18,7 +18,7 @@
 # include <sys/uio.h>
 # include <sys/types.h>
 
-# define BUF_SIZE 8
+# define BUF_SIZE 1000
 
 int		get_next_line(const int fd, char **line);
 #endif

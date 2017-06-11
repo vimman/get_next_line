@@ -8,11 +8,11 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 set shortmess=aoO
 badd +1 main.c
-badd +0 get_next_line.c
+badd +1 get_next_line.c
 badd +24 get_next_line.h
-badd +0 term
-badd +0 term://.//80509:/bin/zsh
-badd +0 test.txt
+badd +1 term
+badd +1 term://.//31814:/bin/zsh
+badd +1 test.txt
 argglobal
 silent! argdel *
 argadd main.c
@@ -29,18 +29,25 @@ split
 wincmd w
 wincmd w
 wincmd w
+wincmd _ | wincmd |
+split
+1wincmd k
+wincmd w
 set nosplitbelow
 set nosplitright
 wincmd t
 set winminheight=1 winminwidth=1 winheight=1 winwidth=1
-exe '1resize ' . ((&lines * 16 + 40) / 81)
+exe '1resize ' . ((&lines * 39 + 40) / 81)
 exe 'vert 1resize ' . ((&columns * 106 + 159) / 319)
-exe '2resize ' . ((&lines * 61 + 40) / 81)
+exe '2resize ' . ((&lines * 38 + 40) / 81)
 exe 'vert 2resize ' . ((&columns * 106 + 159) / 319)
 exe 'vert 3resize ' . ((&columns * 106 + 159) / 319)
+exe '4resize ' . ((&lines * 27 + 40) / 81)
 exe 'vert 4resize ' . ((&columns * 105 + 159) / 319)
+exe '5resize ' . ((&lines * 50 + 40) / 81)
+exe 'vert 5resize ' . ((&columns * 105 + 159) / 319)
 argglobal
-edit term://.//80509:/bin/zsh
+edit term://.//31814:/bin/zsh
 setlocal fdm=manual
 setlocal fde=0
 setlocal fmr={{{,}}}
@@ -49,11 +56,11 @@ setlocal fdl=0
 setlocal fml=1
 setlocal fdn=20
 setlocal fen
-let s:l = 2 - ((1 * winheight(0) + 8) / 16)
+let s:l = 15 - ((14 * winheight(0) + 19) / 39)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-2
+15
 normal! 0
 wincmd w
 argglobal
@@ -66,11 +73,11 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 2 - ((1 * winheight(0) + 30) / 61)
+let s:l = 1 - ((0 * winheight(0) + 19) / 38)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-2
+1
 normal! 0
 wincmd w
 argglobal
@@ -84,11 +91,29 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 23 - ((22 * winheight(0) + 39) / 78)
+let s:l = 46 - ((45 * winheight(0) + 39) / 78)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-23
+46
+normal! 017|
+wincmd w
+argglobal
+edit get_next_line.h
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let s:l = 15 - ((14 * winheight(0) + 13) / 27)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+15
 normal! 0
 wincmd w
 argglobal
@@ -102,20 +127,23 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 1 - ((0 * winheight(0) + 39) / 78)
+let s:l = 52 - ((47 * winheight(0) + 25) / 50)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-1
-normal! 0
+52
+normal! 09|
 wincmd w
 3wincmd w
-exe '1resize ' . ((&lines * 16 + 40) / 81)
+exe '1resize ' . ((&lines * 39 + 40) / 81)
 exe 'vert 1resize ' . ((&columns * 106 + 159) / 319)
-exe '2resize ' . ((&lines * 61 + 40) / 81)
+exe '2resize ' . ((&lines * 38 + 40) / 81)
 exe 'vert 2resize ' . ((&columns * 106 + 159) / 319)
 exe 'vert 3resize ' . ((&columns * 106 + 159) / 319)
+exe '4resize ' . ((&lines * 27 + 40) / 81)
 exe 'vert 4resize ' . ((&columns * 105 + 159) / 319)
+exe '5resize ' . ((&lines * 50 + 40) / 81)
+exe 'vert 5resize ' . ((&columns * 105 + 159) / 319)
 tabnext 1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
