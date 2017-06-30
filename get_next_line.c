@@ -10,6 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdio.h>
+
 #include "get_next_line.h"
 #include "libft.h"
 
@@ -33,7 +35,7 @@ int		get_next_line(const int fd, char **line)
 		ptr = ft_strchr(buf[fd], '\n');
 		free(buf[fd]);
 	}
-	if (!ptr && !ret && !buf[fd])
+	if (!ptr && !ret && *buf[fd] != '\0')
 	{
 		*line = ft_strdup(buf[fd]);
 		buf[fd] = NULL;
@@ -46,10 +48,7 @@ int		get_next_line(const int fd, char **line)
 		*ptr = '\0';
 		*line = ft_strsub(buf[fd], 0, (ptr - buf[fd]));
 		buf[fd] = ft_strdup(ptr + 1);
-		free(buf[fd]);
 		return (1);
 	}
-	if (ret == 0)
-		return (0);
-	return (1);
+	return (0);
 }
