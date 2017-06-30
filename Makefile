@@ -12,7 +12,7 @@
 
 NAME = get_next_line_test
 
-FLAGS = -Wall -Werror -Wextra
+FLAGS = -Wall -Werror -Wextra -g
 
 LFLAGS = -Llibft -lft
 

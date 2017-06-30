@@ -23,32 +23,52 @@
 int		main(int argc, char **argv)
 {
 	int		i;
-	int		fd;
+	int		ret;
+	int		fd[100];
 	char	*tmp;
 
 	i = 0;
+	ret = 0;
 	tmp = NULL;
 	if (argc == 1)
 	{
-		fd = 0;
-		get_next_line(fd, &tmp);
+		get_next_line(fd[0], &tmp);
 		ft_putstr(tmp);
 	}
 	else if (argc == 2)
 	{
-		fd = open(argv[1], O_RDONLY);
-		while (get_next_line(fd, &tmp))
+		if ((fd[0] = open(argv[1], O_RDONLY)) == -1)
+			ft_putstr("open() failed \n");
+		while ((ret = get_next_line(fd[0], &tmp)))
 		{
 			ft_putstr(tmp);
+			ft_putstr("\n");
+//			ft_putnbr(ret);
+//			ft_putstr("\n");
+		}
+		ret = get_next_line(fd[0], &tmp);
+//		ft_putnbr(ret);
+//		ft_putstr("\n");
+		return (0);
+	}
+	else if (argc > 2)
+	{
+		if ((fd[i] = open(argv[i], O_RDONLY)) == -1)
+			ft_putstr("open() failed \n");
+		while (get_next_line(fd[i], &tmp))
+		{
+			ft_putstr(tmp);
+			ft_putstr("\n");
+		}
+		i++;
+		if ((fd[i] = open(argv[i], O_RDONLY)) == -1)
+			ft_putstr("open() failed \n");
+		while ((ret = get_next_line(fd[i], &tmp)))
+		{
+			ft_putstr(tmp);
+			ft_putstr("\n");
 		}
 	}
-	else if (argc != 2)
+	else 
 		ft_putstr("fuck you man !");
-	fd = open(argv[1], O_RDONLY);
-	if (fd == -1)
-		ft_putstr("open() failed \n");
-	while (get_next_line(fd, &tmp))
-	{
-		printf("%s", tmp);
-	}
 }

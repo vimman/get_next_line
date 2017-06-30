@@ -18,7 +18,8 @@
 # include <sys/uio.h>
 # include <sys/types.h>
 
-# define BUF_SIZE 1000
+# define BUF_SIZE 4096
+# define OPEN_MAX 10240
 
 int		get_next_line(const int fd, char **line);
 #endif
