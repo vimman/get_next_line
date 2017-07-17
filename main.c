@@ -32,8 +32,11 @@ int		main(int argc, char **argv)
 	tmp = NULL;
 	if (argc == 1)
 	{
-		get_next_line(fd[0], &tmp);
-		ft_putstr(tmp);
+		while (!(ft_strcmp(tmp, "exit")))
+		{
+			get_next_line(fd[0], &tmp);
+			ft_putendl(tmp);
+		}
 	}
 	else if (argc == 2)
 	{
@@ -43,31 +46,47 @@ int		main(int argc, char **argv)
 		{
 			ft_putstr(tmp);
 			ft_putstr("\n");
-//			ft_putnbr(ret);
-//			ft_putstr("\n");
+			//ft_putnbr(ret);
+			//ft_putstr("\n");
 		}
-		ret = get_next_line(fd[0], &tmp);
-//		ft_putnbr(ret);
-//		ft_putstr("\n");
+		//ret = get_next_line(fd[0], &tmp);
 		return (0);
 	}
 	else if (argc > 2)
 	{
-		if ((fd[i] = open(argv[i], O_RDONLY)) == -1)
-			ft_putstr("open() failed \n");
-		while (get_next_line(fd[i], &tmp))
+		char		*line;
+		int			fd;
+		int			ret;
+		int			count_lines;
+		char		*filename;
+		int			errors;
+
+		filename = "gnl5_1.txt";
+		fd = open(filename, O_RDONLY);
+		if (fd > 2)
 		{
-			ft_putstr(tmp);
-			ft_putstr("\n");
+			count_lines = 0;
+			errors = 0;
+			line = NULL;
+			while ((ret = get_next_line(fd, &line)) > 0)
+			{
+				if (count_lines == 0 && strcmp(line, "123") != 0)
+					errors++;
+				count_lines++;
+				if (count_lines > 50)
+					break ;
+			}
+			close(fd);
+			if (count_lines != 1)
+				printf("-> must have returned '1' once instead of %d time(s)\n", count_lines);
+			if (errors > 0)
+				printf("-> must have read \"123\" instead of \"%s\"\n", line);
+			if (count_lines == 1 && errors == 0)
+				printf("OK\n");
 		}
-		i++;
-		if ((fd[i] = open(argv[i], O_RDONLY)) == -1)
-			ft_putstr("open() failed \n");
-		while ((ret = get_next_line(fd[i], &tmp)))
-		{
-			ft_putstr(tmp);
-			ft_putstr("\n");
-		}
+		else
+			printf("An error occured while opening file %s", filename);
+		return (0);
 	}
 	else 
 		ft_putstr("fuck you man !");

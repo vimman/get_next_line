@@ -6,7 +6,7 @@
 /*   By: qdurot <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/05 00:53:09 by qdurot            #+#    #+#             */
-/*   Updated: 2017/05/16 16:00:20 by qdurot           ###   ########.fr       */
+/*   Updated: 2017/07/09 10:55:24 by qdurot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,15 @@
 # include <sys/uio.h>
 # include <sys/types.h>
 
-# define BUF_SIZE 4096
-# define OPEN_MAX 10240
+# define BUF_SIZE 5
+# define FD_MAX 10240
+
+typedef	struct	s_box
+{
+	int			fd;
+	static char	*buf;
+	t_box		*next;
+}				t_box;
 
 int		get_next_line(const int fd, char **line);
 #endif
