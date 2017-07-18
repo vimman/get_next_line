@@ -24,8 +24,7 @@
 typedef	struct	s_box
 {
 	int			fd;
-	static char	*buf;
-	t_box		*next;
+	char		*buf;
 }				t_box;
 
 int		get_next_line(const int fd, char **line);
