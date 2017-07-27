@@ -32,7 +32,7 @@ int		main(int argc, char **argv)
 	tmp = NULL;
 	if (argc == 1)
 	{
-		while (!(ft_strcmp(tmp, "exit")))
+		while (1)
 		{
 			get_next_line(fd[0], &tmp);
 			ft_putendl(tmp);
@@ -49,8 +49,13 @@ int		main(int argc, char **argv)
 			//ft_putnbr(ret);
 			//ft_putstr("\n");
 		}
-		//ret = get_next_line(fd[0], &tmp);
-		return (0);
+	//ret = get_next_line(fd[0], &tmp);
+	//printf("%d:%s\n", ret, tmp);	
+	//ret = get_next_line(fd[0], &tmp);
+	//printf("%d:%s\n", ret, tmp);	
+	//ret = get_next_line(fd[0], &tmp);
+	//printf("%d:%s\n", ret, tmp);	
+	return (0);
 	}
 	else if (argc > 2)
 	{

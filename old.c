@@ -1,37 +1,25 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: qdurot <marvin@42.fr>                      +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/05/16 17:39:51 by qdurot            #+#    #+#             */
-/*   Updated: 2017/07/09 11:22:04 by qdurot           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include <stdio.h>
 
 #include "get_next_line.h"
-#include "libft.h"
+#include "libft/includes/libft.h"
 
 int		get_next_line(const int fd, char **line)
 {
 	size_t				i;
 	int					ret;
-	char				rd[BUF_SIZE + 1];
-	static char			*buf[OPEN_MAX];
+	char				rd[BUFF_SIZE + 1];
+	static char			*buf[FD_MAX];
 	char				*ptr;
 
 	i = 0;
 	ptr = NULL;
-	rd[BUF_SIZE] = '\0';
-	if (fd > OPEN_MAX)
+	rd[BUFF_SIZE] = '\0';
+	if (fd > FD_MAX)
 		return (-1);
 	if (!buf[fd])
 		buf[fd] = ft_strnew(0);
 	ptr = ft_strchr(buf[fd], '\n');
-	while (!ptr && (ret = read(fd, rd, BUF_SIZE)) > 0)
+	while (!ptr && (ret = read(fd, rd, BUFF_SIZE)) > 0)
 	{
 		buf[fd] = ft_strjoin(buf[fd], rd);
 		ptr = ft_strchr(buf[fd], '\n');

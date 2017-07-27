@@ -18,7 +18,7 @@
 # include <sys/uio.h>
 # include <sys/types.h>
 
-# define BUFF_SIZE 5
+# define BUFF_SIZE 32
 # define FD_MAX 10240
 
 typedef	struct	s_box

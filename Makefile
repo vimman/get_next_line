@@ -12,7 +12,7 @@
 
 NAME = get_next_line_test
 
-FLAGS = -Wall -Werror -Wextra -g
+FLAGS = -Wall -Werror -Wextra -fsanitize=address -g3
 
 LFLAGS = -Llibft -lft
 
