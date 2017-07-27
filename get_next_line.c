@@ -1,27 +1,59 @@
-#include <stdio.h>
+#include <unistd.h>
 #include "get_next_line.h"
-#include "libft.h"
+#include "libft/includes/libft.h"
 
-int		ft_read(int fd, char **line)
+/** 
+ * fill_line
+ **/
+
+int		ft_read(int fd, t_list buf, char **line)
 {
 	int		ret;
 	char	*ptr;
-	char	rd[BUF_SIZE + 1];
-	t_list	*lst;
-	t_box	*box;
+	char	rd[BUFF_SIZE + 1];
 
-	ft_bzero(rd, (BUF_SIZE + 1));
-	while (!ptr && (ret = read(fd, rd, BUF_SIZE)) > 0)
+	(void)line;
+	rd[BUFF_SIZE] = '\0';
+	ptr = NULL;
+	if (buf.content)
+		ptr = ft_strchr(buf.content, '\n');
+	while (!ptr && (ret = read(fd, rd, BUFF_SIZE)) > 0)
 	{
-		lst = ft_lstnew(&box, sizeof(t_box));
-		lst->content->buf = rd;
-		lst->content->fd = fd;
-		ptr = ft_memchr(lst->content->buf, '\n');
+		buf.content= ft_strjoin(buf.content, rd);
+		ptr = ft_strchr(buf.content, '\n');
 	}
+	if (!ptr && buf.content)
+	{
+		free(*line);
+		*line = ft_strdup(buf.content);
+		free(buf.content);
+		buf.content= NULL;
+		return(0);
+	}
+	else
+	{
+		*ptr = '\0';
+		*line = ft_strsub(buf.content, 0, (ptr - (char *)buf.content));
+		if (ptr + 1)
+			buf.content = ft_strdup(ptr + 1);
+		else
+			free(buf.content);
+		return (1);
+	}
+
 }
 
-int		get_next_line(int fd, char **line)
+int		get_next_line(const int fd, char **line)
 {
-	if (fd > FD_MAX)
-		return (1);
+	static t_list		buf[FD_MAX];
+	int					ret;
+
+	if (fd < 0 || fd > FD_MAX)
+		return (-1);
+	if (!(buf[fd].content))
+		buf[fd] = *ft_lstnew(ft_strnew(0), BUFF_SIZE); //malloc buf[].content
+	ret = ft_read(fd, buf[fd], line);
+	if (fd < 0 || ret < 0)
+		return (-1);
+	return (ret);
 }
