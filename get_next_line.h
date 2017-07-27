@@ -21,11 +21,5 @@
 # define BUFF_SIZE 32
 # define FD_MAX 10240
 
-typedef	struct	s_box
-{
-	int			fd;
-	char		*buf;
-}				t_box;
-
 int		get_next_line(const int fd, char **line);
 #endif

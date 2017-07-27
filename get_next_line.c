@@ -2,45 +2,46 @@
 #include "get_next_line.h"
 #include "libft/includes/libft.h"
 
-/** 
- * fill_line
- **/
-int		get_next_line(const int fd, char **line)
+int		ft_find_n(char *buf, int fd, char **line)
 {
-	size_t				i;
-	int					ret;
-	char				rd[BUFF_SIZE + 1];
-	static char			*buf[FD_MAX];
-	char				*ptr;
+	int		ret;
+	char	*ptr;
+	char	rd[BUFF_SIZE + 1];
 
-	i = 0;
-	ptr = NULL;
+	if (!buf)
+		buf = ft_strdup(0);
 	rd[BUFF_SIZE] = '\0';
-	if (fd > FD_MAX)
-		return (-1);
-	if (!buf[fd])
-		buf[fd] = ft_strnew(0);
-	ptr = ft_strchr(buf[fd], '\n');
+	ptr = ft_strchr(buf, '\n');
 	while (!ptr && (ret = read(fd, rd, BUFF_SIZE)) > 0)
 	{
-		buf[fd] = ft_strjoin(buf[fd], rd);
-		ptr = ft_strchr(buf[fd], '\n');
+		rd[ret] = '\0';
+		buf = ft_strjoin(buf, rd);
+		ptr = ft_strchr(buf, '\n');
 	}
-	if (ret < 0 || fd < 0)
-		return (-1);
-	if (!ptr && *buf[fd])
+	if (!ptr && buf)
 	{
-		*line = ft_strdup(buf[fd]);
-		buf[fd] = NULL;
-		return(1);
+		*line = ft_strdup(buf);
+		buf = NULL;
+		return (0);
 	}
-	else if (!buf[fd] || !*buf[fd])
-		return(0);
 	else
 	{
 		*ptr = '\0';
-		*line = ft_strsub(buf[fd], 0, (ptr - buf[fd]));
-		buf[fd] = ft_strdup(ptr + 1);
+		*line = ft_strdup(buf);
+		buf = ft_strdup(ptr + 1);
 		return (1);
 	}
+}
+
+int		get_next_line(const int fd, char **line)
+{
+	int			ret;
+	static char	*buf[FD_MAX];
+
+	if (fd > FD_MAX || fd < 0 || line == NULL)
+		return (-1);
+	if (!buf[fd])
+		buf[fd] = ft_strnew(0);
+	ret = (ft_find_n(buf[fd], fd, line));
+	return (ret);
 }
