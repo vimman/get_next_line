@@ -46,8 +46,8 @@ int		main(int argc, char **argv)
 		{
 			ft_putstr(tmp);
 			ft_putstr("\n");
-			//ft_putnbr(ret);
-			//ft_putstr("\n");
+	//		ft_putnbr(ret);
+	//		ft_putstr("\n");
 		}
 	//ret = get_next_line(fd[0], &tmp);
 	//printf("%d:%s\n", ret, tmp);	
