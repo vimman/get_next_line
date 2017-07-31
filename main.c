@@ -44,17 +44,10 @@ int		main(int argc, char **argv)
 			ft_putstr("open() failed \n");
 		while ((ret = get_next_line(fd[0], &tmp)))
 		{
-			ft_putstr(tmp);
-			ft_putstr("\n");
+			ft_putendl(tmp);
 	//		ft_putnbr(ret);
 	//		ft_putstr("\n");
 		}
-	//ret = get_next_line(fd[0], &tmp);
-	//printf("%d:%s\n", ret, tmp);	
-	//ret = get_next_line(fd[0], &tmp);
-	//printf("%d:%s\n", ret, tmp);	
-	//ret = get_next_line(fd[0], &tmp);
-	//printf("%d:%s\n", ret, tmp);	
 	return (0);
 	}
 	else if (argc > 2)
