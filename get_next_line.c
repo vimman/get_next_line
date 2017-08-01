@@ -1,4 +1,3 @@
-#include <stdio.h> //Attention
 #include <unistd.h>
 #include "get_next_line.h"
 #include "libft/includes/libft.h"
@@ -43,23 +42,24 @@ int		ft_find_n(char *buff, int fd, char **line)
 	if (!buf[fd])
 		buf[fd] = buff;
 	ptr = ft_strchr(buf[fd], '\n');
+	ft_bzero(rd, BUFF_SIZE);
 	while (!ptr && (ret = read(fd, rd, BUFF_SIZE)) > 0)
 	{
+		rd[ret] = '\0';
 		buf[fd] = ft_freejoin(buf[fd], rd);
 		ptr = ft_strchr(buf[fd], '\n');
-		ft_strclr(rd);
 	}
-	if (ptr == '\0' && buf[fd])
+	if (ptr)
 	{
-		*line = ft_strdup(buf[fd]);
-		return (0);
+		*ptr = '\0';
+		*line = ft_freejoin(buf[fd], "");
+		buf[fd] = ft_strdup(ptr + 1);
+		return (1);
 	}
 	else
 	{
-		*ptr = '\0';
 		*line = ft_strdup(buf[fd]);
-		buf[fd] = ft_strdup(ptr + 1);
-		return (1);
+		return((*rd) ? 1 : 0);
 	}
 }
 
@@ -68,10 +68,9 @@ int		get_next_line(const int fd, char **line)
 	char	*buf;
 
 	buf = NULL;
-	if (fd > FD_MAX || fd < 0 || line == NULL)
+	if (fd > FD_MAX || fd < 0 || line == NULL || read(fd, buf, 0) < 0)
 		return (-1);
 	if (!buf)
 		buf = ft_strnew(0);
 	return (ft_find_n(buf, fd, line));
 }
-
