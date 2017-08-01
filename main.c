@@ -36,11 +36,10 @@ int		main(int argc, char **argv)
 			ft_putnbr(ret);
 			ft_putstr("\n");
 		}
-	//	ft_putstr(tmp);
-		ft_putstr("\n");
-		ft_putnbr(ret);
-		ft_putstr("\n");
-		return (0);
+	//		ft_putnbr(ret);
+	//		ft_putstr("\n");
+		}
+	return (0);
 	}
 	else if (argc == 3)
 	{

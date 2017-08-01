@@ -43,7 +43,11 @@ int		ft_find_n(char *buff, int fd, char **line)
 		buf[fd] = ft_freejoin(buf[fd], rd);
 		ptr = ft_strchr(buf[fd], '\n');
 	}
+<<<<<<< HEAD
 	if (ptr)
+=======
+	if (!ptr && buf[fd])
+>>>>>>> c20e7932af0ea8f37552ef6725e2ba151a5d1fe6
 	{
 		*ptr = '\0';
 		*line = ft_freejoin(buf[fd], "");
@@ -52,12 +56,15 @@ int		ft_find_n(char *buff, int fd, char **line)
 	}
 	else
 	{
-		//*line = ft_strdup(buf[fd]);
-		//return((*rd) ? 1 : 0);
+<<<<<<< HEAD
+		*line = ft_strdup(buf[fd]);
+		return((*rd) ? 1 : 0);
+=======
 		*ptr = '\0';
 		*line = ft_freejoin(buf[fd], "");
 		buf[fd] = ft_strdup(ptr + 1);
 		return (1);
+>>>>>>> c20e7932af0ea8f37552ef6725e2ba151a5d1fe6
 	}
 }
 
@@ -66,7 +73,11 @@ int		get_next_line(const int fd, char **line)
 	char	*buf;
 
 	buf = NULL;
+<<<<<<< HEAD
 	if (fd > FD_MAX || fd < 0 || line == NULL || read(fd, buf, 0) < 0)
+=======
+	if (fd > FD_MAX || fd < 0 || line == NULL || read(fd, buf, 0))
+>>>>>>> c20e7932af0ea8f37552ef6725e2ba151a5d1fe6
 		return (-1);
 	if (!buf)
 		buf = ft_strnew(0);
