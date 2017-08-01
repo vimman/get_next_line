@@ -38,8 +38,6 @@ int		main(int argc, char **argv)
 		}
 	//		ft_putnbr(ret);
 	//		ft_putstr("\n");
-		}
-	return (0);
 	}
 	else if (argc == 3)
 	{
@@ -68,4 +66,5 @@ int		main(int argc, char **argv)
 	}
 	else 
 		ft_putstr("fuck you man !");
+	return (0);
 }
