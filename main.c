@@ -76,6 +76,5 @@ int		main(int argc, char **argv)
 	{
 		ft_putstr("fuck you man !");
 	}
-	while (1);
 	return (0);
 }
