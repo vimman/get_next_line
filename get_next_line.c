@@ -2,7 +2,8 @@
 #include "get_next_line.h"
 #include "libft/includes/libft.h"
 
-char	*ft_freejoin(char *s1, char const *s2)
+
+char			*ft_freejoin(char *s1, char const *s2)
 {
 	size_t	i;
 	size_t	len_s1;
@@ -10,8 +11,6 @@ char	*ft_freejoin(char *s1, char const *s2)
 	char	*ret;
 
 	i = -1;
-	if (!s1 || !s2)
-		return (NULL);
 	len_s1 = ft_strlen(s1);
 	len_s2 = ft_strlen(s2);
 	if (!(ret = (char *)malloc(sizeof(char) * (len_s1 + len_s2 + 1))))
@@ -26,49 +25,82 @@ char	*ft_freejoin(char *s1, char const *s2)
 	return (ret);
 }
 
-int		ft_split(char **buf, char **line, char *ptr)
+static t_node	*ft_node(int fd)
 {
-	if (ptr == '\0' && **buf)
+	static t_node	*node;
+	t_node			*new;
+	t_node			*tmp;
+	
+	/* If the list doesn't exist, create it */
+	if (!node)
 	{
-		*line = ft_freejoin(*buf, "");
-		return (1);
+		if (!(node = (t_node *)malloc(sizeof(t_node))))
+			return (NULL);
+		node->fd = fd;
+		node->buf = ft_strnew(0);
+		node->next = NULL;
+		return (node);
 	}
-	else if (ptr && **buf)
+	/* Search for the file descriptor in the list*/
+	while (node)
 	{
-		*ptr = '\0';
-		*line = ft_freejoin(*buf, "");
-		*buf = ft_strdup(ptr + 1);
-		return (1);
+		if (node->fd == fd)
+			return (node);
+		else
+			node = node->next;
 	}
-	else
-		return (0);
+	/* If any node have been found with this file descriptor
+	 * add a new one to the list */
+	if (!(new = (t_node *)malloc(sizeof(t_node))))
+		return (NULL);
+	tmp = node;
+	new->next = tmp;
+	new->buf = ft_strnew(0);
+	new->fd = fd;
+	node = new;
+	return (node);
 }
 
-int		ft_find_n(int fd, char **line)
+int		ft_read(char *buf, int fd, char **line)
 {
-	int			ret;
-	char		*ptr;
-	static char	*buf[FD_MAX];
-	char		rd[BUFF_SIZE + 1];
+	int		ret;
+	char	*ptr;
+	char	rd[BUFF_SIZE + 1];
 
-	if (!buf[fd])
-		buf[fd] = ft_strnew(0);
-	ptr = ft_strchr(buf[fd], '\n');
+	/* Look for a '\n' in the buffer */
+	ptr = ft_strchr(buf, '\n');
+	ft_bzero(rd, BUFF_SIZE);
+	/* Read and join buf until it finds a '\n' or read return 0 */
 	while (!ptr && (ret = read(fd, rd, BUFF_SIZE)) > 0)
 	{
 		rd[ret] = '\0';
-		buf[fd] = ft_freejoin(buf[fd], rd);
-		ptr = ft_strchr(buf[fd], '\n');
+		buf = ft_freejoin(buf, rd);
+		ptr = ft_strchr(buf, '\n');
 	}
-	return (ft_split(&buf[fd], line, ptr));
+	if (!ptr && buf)
+	{
+		*line = ft_strdup(buf);
+		return (ret ? 1 : 0);
+	}
+	if (ptr)
+	{
+		*ptr = '\0';
+		*line = ft_strdup(buf);
+		buf = ft_strdup(ptr + 1);
+		return (1);
+	}
+	else 
+		return (0);
 }
 
 int		get_next_line(const int fd, char **line)
 {
-	char	*buf;
+	int		ret;
+	t_node	*node;
 
-	buf = NULL;
-	if (fd > FD_MAX || fd < 0 || line == NULL || read(fd, buf, 0) < 0)
+	node = ft_node(fd);
+	if (fd > FD_MAX || fd < 0 || line == NULL || read(fd, node->buf, 0) < 0)
 		return (-1);
-	return (ft_find_n(fd, line));
+	ret = ft_read(node->buf, fd, line);
+	return (ret);
 }
