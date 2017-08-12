@@ -2,6 +2,9 @@
 #include "get_next_line.h"
 #include "libft/includes/libft.h"
 
+/*
+** Join two string and free the first one
+*/
 
 char			*ft_freejoin(char *s1, char const *s2)
 {
@@ -25,21 +28,24 @@ char			*ft_freejoin(char *s1, char const *s2)
 	return (ret);
 }
 
+/*
+** Search for the file descriptor in the list
+** Create it if doesn't exist
+** Add a new node if fd haven't been found in the list
+*/
+
 static t_list	*ft_node(t_list **list, int fd)
 {
 	t_list	*node;
 	char	*buf;
 
 	node = *list;
-	/* Search for the file descriptor in the list*/
 	while (node)
 	{
 		if ((int)node->content_size == fd)
 			return (node);
 		node = node->next;
 	}
-	/* If any node have been found with this file descriptor
-	 * add a new one to the list */
 	buf = "\0";
 	if (!(node = ft_lstnew(buf, 1)))
 		return (NULL);
@@ -48,58 +54,51 @@ static t_list	*ft_node(t_list **list, int fd)
 	return (node);
 }
 
-int		ft_read(char **buf, int fd, char **line)
+/*
+** Read and join buf until it finds a '\n' or read return 0
+*/
+
+char			*ft_read(char **buf, int fd, char *ptr)
 {
 	int		ret;
-	char	*ptr;
 	char	rd[BUFF_SIZE + 1];
 
-	/* Look for a '\n' in the buffer */
-
-	ptr = ft_strchr(*buf, '\n');
-	ft_bzero(rd, BUFF_SIZE);
-
-	/* Read and join buf until it finds a '\n' or read return 0 */
-
-	while (!ptr && (ret = read(fd, rd, BUFF_SIZE)))
+	while ((ret = read(fd, rd, BUFF_SIZE)))
 	{
 		rd[ret] = '\0';
-		if (!(*buf= ft_freejoin(*buf, rd)))
-			return (-1);
+		if (!(*buf = ft_freejoin(*buf, rd)))
+			return (NULL);
 		if ((ptr = ft_strchr(*buf, '\n')))
-			break;
+			return (ptr);
 	}
-
-	/* If '\n' is found replace it by a '\0' and copy the line in 'line'*/
-
-	if (ptr)
-	{
-		*ptr = '\0';
-		*line = ft_strdup(*buf);
-		*buf = ft_strdup(ptr + 1);
-		return (1);
-	}
-	else
-	{
-		*line = ft_strdup(*buf);
-		*buf = ft_strdup("\0");
-		return ((*rd || **line) ?  1 : 0);
-	}
+	return (0);
 }
 
-int		get_next_line(const int fd, char **line)
+/*
+** This function verify if conditions are ok, set the pointer to '\n'
+** call ft_read or split the buffer if necessary
+*/
+
+int				get_next_line(const int fd, char **line)
 {
-	int				ret;
+	char			*ptr;
 	static t_list	*list;
 	t_list			*node;
 
-	/* Create or retrieve file node*/
-	if (!(node = ft_node(&list, fd)))
+	if (!(node = ft_node(&list, fd)) || fd > FD_MAX || fd < 0 ||
+			line == NULL || read(fd, node->content, 0) < 0)
 		return (-1);
-	/* Verifie if fd is ok, if line exist and if file is openned */
-	if (fd > FD_MAX || fd < 0 || line == NULL ||
-			read(fd, node->content, 0) < 0)
-		return (-1);
-	ret = ft_read((char **)&node->content, fd, line);
-	return (ret);
+	ptr = ft_strchr(node->content, '\n');
+	if (!ptr)
+		ptr = ft_read((char **)&node->content, fd, ptr);
+	if (ptr)
+	{
+		*ptr = '\0';
+		*line = ft_freejoin((char *)node->content, "");
+		node->content = ft_strdup(ptr + 1);
+		return (1);
+	}
+	*line = ft_strdup(node->content);
+	node->content = ft_strdup("\0");
+	return ((**line) ? 1 : 0);
 }

@@ -23,13 +23,4 @@
 
 int				get_next_line(const int fd, char **line);
 
-
-typedef struct	s_node	t_node;
-struct			s_node
-{
-	int			fd;
-	char		*buf;
-	t_node		*next;
-};
-
 #endif
