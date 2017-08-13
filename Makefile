@@ -12,11 +12,13 @@
 
 NAME = get_next_line_test
 
-FLAGS = -Wall -Werror -Wextra -fsanitize=address -g3
+FLAGS = -Wall -Werror -Wextra -g3 #-fsanitize=address
 
 LFLAGS = -Llibft -lft
 
 SRC = main.c get_next_line.c
+
+HEADERS = libft/includes
 
 OBJ = $(SRC:.c=.o)
 
@@ -27,7 +29,7 @@ $(NAME): $(LIB) $(OBJ)
 	@gcc $(FLAGS) $(OBJ) $(LFLAGS) -o $(NAME)
 
 $(OBJ):
-	@gcc $(FLAGS) -c $(SRC) -I libft
+	@gcc $(FLAGS) -c $(SRC) -I $(HEADERS)
 
 clean:
 	@rm -rf $(OBJ)

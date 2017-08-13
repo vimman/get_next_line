@@ -33,11 +33,12 @@ int		main(int argc, char **argv)
 		while ((ret = get_next_line(fd[0], &tmp)))
 		{
 			ft_putendl(tmp);
-			ft_putnbr(ret);
-			ft_putstr("\n");
+			ft_strdel(&tmp);
+			//ft_putnbr(ret);
+			//ft_putstr("\n");
 		}
-		ft_putnbr(ret);
-		ft_putstr("\n");
+		//ft_putnbr(ret);
+		//ft_putstr("\n");
 	}
 	else if (argc == 4)
 	{

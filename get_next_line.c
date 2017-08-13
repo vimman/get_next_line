@@ -1,32 +1,6 @@
 #include <unistd.h>
 #include "get_next_line.h"
-#include "libft/includes/libft.h"
-
-/*
-** Join two string and free the first one
-*/
-
-char			*ft_freejoin(char *s1, char const *s2)
-{
-	size_t	i;
-	size_t	len_s1;
-	size_t	len_s2;
-	char	*ret;
-
-	i = -1;
-	len_s1 = ft_strlen(s1);
-	len_s2 = ft_strlen(s2);
-	if (!(ret = (char *)malloc(sizeof(char) * (len_s1 + len_s2 + 1))))
-		return (NULL);
-	while (s1[++i])
-		ret[i] = s1[i];
-	free(s1);
-	i = -1;
-	while (s2[++i])
-		ret[len_s1 + i] = s2[i];
-	ret[len_s1 + len_s2] = '\0';
-	return (ret);
-}
+#include "libft.h"
 
 /*
 ** Search for the file descriptor in the list
@@ -37,7 +11,6 @@ char			*ft_freejoin(char *s1, char const *s2)
 static t_list	*ft_node(t_list **list, int fd)
 {
 	t_list	*node;
-	char	*buf;
 
 	node = *list;
 	while (node)
@@ -46,8 +19,7 @@ static t_list	*ft_node(t_list **list, int fd)
 			return (node);
 		node = node->next;
 	}
-	buf = "\0";
-	if (!(node = ft_lstnew(buf, 1)))
+	if (!(node = ft_lstnew("", 1)))
 		return (NULL);
 	node->content_size = fd;
 	ft_lstadd(list, node);
@@ -55,19 +27,22 @@ static t_list	*ft_node(t_list **list, int fd)
 }
 
 /*
-** Read and join buf until it finds a '\n' or read return 0
+** Read and join buf until it finds a '\n' or read returns 0
 */
 
 char			*ft_read(char **buf, int fd, char *ptr)
 {
 	int		ret;
 	char	rd[BUFF_SIZE + 1];
+	char	*free_ptr;
 
 	while ((ret = read(fd, rd, BUFF_SIZE)))
 	{
 		rd[ret] = '\0';
-		if (!(*buf = ft_freejoin(*buf, rd)))
+		free_ptr = *buf;
+		if (!(*buf = ft_strjoin(*buf, rd)))
 			return (NULL);
+		free(free_ptr);
 		if ((ptr = ft_strchr(*buf, '\n')))
 			return (ptr);
 	}
@@ -84,6 +59,7 @@ int				get_next_line(const int fd, char **line)
 	char			*ptr;
 	static t_list	*list;
 	t_list			*node;
+	char			*free_ptr;
 
 	if (!(node = ft_node(&list, fd)) || fd > FD_MAX || fd < 0 ||
 			line == NULL || read(fd, node->content, 0) < 0)
@@ -94,8 +70,10 @@ int				get_next_line(const int fd, char **line)
 	if (ptr)
 	{
 		*ptr = '\0';
-		*line = ft_freejoin((char *)node->content, "");
+		*line = ft_strdup((char *)node->content);
+		free_ptr = node->content;
 		node->content = ft_strdup(ptr + 1);
+		free(free_ptr);
 		return (1);
 	}
 	*line = ft_strdup(node->content);
