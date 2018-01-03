@@ -77,6 +77,7 @@ int				get_next_line(const int fd, char **line)
 		return (1);
 	}
 	*line = ft_strdup(node->content);
+	free(node->content);
 	node->content = ft_strdup("\0");
 	return ((**line) ? 1 : 0);
 }
